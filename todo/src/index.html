@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>ToDo List</title>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+
+  <nav class="flex items-center justify-between px-8 py-4 bg-white shadow-sm">
+    <h1 class="text-2xl font-bold text-blue-600">ToDo</h1>
+    <input type="text" id="search-input" placeholder="Search tasks..." class="border border-gray-200 rounded-full px-4 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 transition-all">
+  </nav>
+
+  <form id="todo-form" class="flex items-center justify-center gap-4 px-6 py-10">
+    <input 
+      id="todo-input"
+      type="text" 
+      placeholder="Add Your Tasks!" 
+      required
+      class="w-full max-w-md pl-4 pr-4 py-2 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
+    >
+    <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition-all shadow-md">
+      Add Task
+    </button>
+  </form>
+
+  <div class="max-w-4xl mx-auto px-6">
+    
+
+    <ul id="todo-list" class="bg-white shadow-lg rounded-b-xl divide-y divide-gray-100 overflow-hidden">
+      </ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

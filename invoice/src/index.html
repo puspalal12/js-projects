@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
+        
+        <div class="lg:w-1/3 space-y-6 print:hidden">
+            <div class="bg-white p-6 rounded-lg shadow border-t-4 border-blue-500">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">1. Company Details</h2>
+                <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Logo (Optional)</label>
+                <input type="file" id="logoInput" accept="image/*" class="w-full text-sm mb-3">
+                <input type="text" id="compName" placeholder="Company Name" class="w-full border p-2 rounded mb-2 text-sm" oninput="updateDetails()">
+                <textarea id="compAddr" placeholder="Company Address" class="w-full border p-2 rounded mb-2 text-sm" oninput="updateDetails()"></textarea>
+                <input type="text" id="compContact" placeholder="Phone/Email" class="w-full border p-2 rounded text-sm" oninput="updateDetails()">
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-t-4 border-green-500">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">2. Billed To</h2>
+                <input type="text" id="custName" placeholder="Customer Name" class="w-full border p-2 rounded mb-2 text-sm" oninput="updateDetails()">
+                <textarea id="custAddr" placeholder="Customer Address" class="w-full border p-2 rounded mb-2 text-sm" oninput="updateDetails()"></textarea>
+                <input type="text" id="custContact" placeholder="Customer Contact Info" class="w-full border p-2 rounded text-sm" oninput="updateDetails()">
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-t-4 border-purple-500">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">3. Tax & Discount</h2>
+                <div class="flex gap-2">
+                    <div class="w-1/2">
+                        <label class="text-xs font-bold text-gray-500 uppercase">Discount (%)</label>
+                        <input type="number" id="discountInput" value="0" min="0" class="w-full border p-2 rounded text-sm" oninput="updateDetails()">
+                    </div>
+                    <div class="w-1/2">
+                        <label class="text-xs font-bold text-gray-500 uppercase">Tax (%)</label>
+                        <input type="number" id="taxInput" value="0" min="0" class="w-full border p-2 rounded text-sm" oninput="updateDetails()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-t-4 border-orange-500">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">4. Line Items</h2>
+                <input type="text" id="itemDesc" placeholder="Item Description" class="w-full border p-2 rounded mb-2 text-sm">
+                <div class="flex gap-2 mb-4">
+                    <input type="number" id="itemQty" value="1" class="w-1/2 border p-2 rounded text-sm">
+                    <input type="number" id="itemRate" value="0" class="w-1/2 border p-2 rounded text-sm">
+                </div>
+                <button onclick="addItem()" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700 transition">Add Item</button>
+            </div>
+            
+            <button onclick="downloadPDF()" class="w-full bg-slate-800 text-white font-bold py-3 rounded shadow-lg hover:bg-black transition">Download PDF</button>
+            <button onclick="clearAll()" class="w-full text-red-500 text-xs font-medium hover:underline text-center">Reset All Data</button>
+        </div>
+
+        <div id="invoice-preview" class="lg:w-2/3 bg-white shadow-2xl rounded p-10 min-h-250">
+            <div class="flex justify-between items-start mb-12">
+                <div>
+                    <div id="logoContainer" class="mb-4 hidden">
+                        <img id="displayLogo" src="" alt="Logo" class="max-h-20 max-w-50 object-contain">
+                    </div>
+                    <h1 class="text-5xl font-black text-slate-800 uppercase tracking-tighter">Invoice</h1>
+                    <p class="text-gray-400 mt-2 font-mono">Date: <span id="currentDate"></span></p>
+                </div>
+                <div class="text-right">
+                    <h3 id="displayCompName" class="text-2xl font-bold text-blue-600">Your Company</h3>
+                    <p id="displayCompAddr" class="text-gray-500 text-sm whitespace-pre-line">Address</p>
+                    <p id="displayCompContact" class="text-gray-500 text-sm">Contact</p>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Client Details:</h4>
+                <h3 id="displayCustName" class="text-xl font-bold text-gray-800">Customer Name</h3>
+                <p id="displayCustAddr" class="text-gray-500 text-sm whitespace-pre-line">Customer Address</p>
+                <p id="displayCustContact" class="text-gray-500 text-sm">Customer Contact</p>
+            </div>
+
+            <table class="w-full mb-8">
+                <thead class="bg-slate-800 text-white">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm uppercase font-semibold">Description</th>
+                        <th class="py-3 px-4 text-center text-sm uppercase font-semibold w-20">Qty</th>
+                        <th class="py-3 px-4 text-right text-sm uppercase font-semibold w-32">Rate</th>
+                        <th class="py-3 px-4 text-right text-sm uppercase font-semibold w-32">Amount</th>
+                        <th class="py-3 px-4 text-center print:hidden w-12"></th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceTableBody"></tbody>
+            </table>
+
+            <div class="flex justify-end pt-6">
+                <div class="w-72 space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Subtotal:</span>
+                        <span id="subtotal" class="font-semibold text-gray-700">NRP.0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-red-500">
+                        <span>Discount (<span id="discountRateDisplay">0</span>%):</span>
+                        <span id="discountAmount">-NRP.0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Tax (<span id="taxRateDisplay">0</span>%):</span>
+                        <span id="taxAmount">NRP.0.00</span>
+                    </div>
+                    <div class="flex justify-between py-4 text-3xl border-t mt-2">
+                        <span class="font-black text-slate-800">Total:</span>
+                        <span id="grandTotal" class="font-black text-blue-600">NRP.0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

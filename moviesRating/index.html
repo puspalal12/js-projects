@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieHub | Discover</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MovieHub</div>
+    </nav>
+
+    <div class="container">
+        <header class="search-section">
+            <h1>What are we watching today?</h1>
+            <div class="search-box">
+                <input type="text" id="movie-input" placeholder="Search movies...">
+                <button id="search-btn">Search</button>
+            </div>
+        </header>
+
+        <section id="search-container" style="display: none;">
+            <h2 class="section-title">Search Results</h2>
+            <div id="search-grid" class="movie-grid"></div>
+            <div class="divider"></div>
+        </section>
+
+        <section id="trending-container">
+            <h2 class="section-title">Trending Now</h2>
+            <div id="trending-grid" class="movie-grid">
+                <p class="loading">Fetching latest movies...</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

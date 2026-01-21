@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Marksheet Generator</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form">
+            <h2>Institution Details</h2>
+            <label for="schoolName">Institution Name:</label>
+            <input type="text" id="schoolName" placeholder="School/College Name" required>
+
+            <label for="schoolAddress">Institution Adress:</label>
+            <input type="text" id="schoolAddress" placeholder="School/College Address" required>
+            
+            <label for="schoolLogo">Upload Institution Logo:</label>
+            <input type="file" id="schoolLogo" accept="image/*">
+            <hr>
+
+            <h2>Student Details</h2>
+            <input type="text" id="fullname" placeholder="Full Name" required>
+            <input type="text" id="class" placeholder="Class" required>
+            <input type="text" id="roll" placeholder="Roll No." required>
+            
+            <p><strong>Marks Obtained</strong></p>
+            <hr>
+            
+            <div id="subjectsContainer">
+                <div class="subject-row">
+                    <input type="text" class="sub-name" placeholder="Subject Name" value="Physics">
+                    <select class="sub-grade">
+                        <option value="">-- Grade --</option>
+                        <option value="a+">A+</option><option value="a">A</option>
+                        <option value="b+">B+</option><option value="b">B</option>
+                        <option value="c+">C+</option><option value="c">C</option>
+                        <option value="d+">D+</option><option value="d">D</option>
+                        <option value="e">E</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" id="addSubjectBtn">+ Add New Subject</button>
+                <button type="button" id="generateBtn">Generate Marksheet</button>
+            </div>
+        </div>
+
+        <div class="marksheet" id="marksheetArea">
+            <div class="placeholder-text">
+                Enter details and click generate to create the marksheet.
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
